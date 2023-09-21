@@ -1,5 +1,5 @@
 class ApiConstants{
-  static String baseUrl="http://192.168.134.117:3100/";
+  static String baseUrl="http://192.168.98.117:3100/";
 static String register="api/register/user";
 static String Login='api/login/';
 static String addturf='api/turf/add-turf';
