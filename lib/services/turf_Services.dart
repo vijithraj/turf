@@ -15,9 +15,32 @@ class TurfServices{
           body['data'].map((e)=>TurfModel.fromJson(e)).toList());
       return data;
     }else {
+     throw Exception('failed to lord data');
+    }
+  }
+
+}
+
+
+
+class SingleTurf{
+  static Future<List<TurfModel>>getSingleturf(String Turfid)async{
+    var Respose=await Api().getData(ApiConstants.singleTurf+Turfid);
+    if (Respose.statusCode==200){
+      var body=json.decode(Respose.body);
+      print(body);
+      List<TurfModel>data=
+          body['data'].map((e)=>TurfModel.fromJson(e)).toList();
+      return data;
+    }else {
       List<TurfModel>data=[];
       return data;
     }
   }
 
 }
+
+
+
+
+

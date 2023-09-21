@@ -421,14 +421,14 @@ class _AddPartState extends State<AddPart> {
                     return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 2),
-                     /* leading:  Container(
+                      leading:  Container(
                         height: 150,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage("server/public/images/"+snapshot.data![index].Image.toString())
                             )
                         ),
-                      ),*/
+                      ),
                       title:  Text(
                         snapshot.data![index].Name.toString(),
                         style: TextStyle(
