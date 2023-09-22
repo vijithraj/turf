@@ -13,7 +13,7 @@ import 'apiServices.dart';
 
 class LoginServices {
   String loginid='';
-  late var role ;
+  late var role,token ;
   var user=2;
   var admin =1;
 
@@ -36,9 +36,12 @@ class LoginServices {
       if (body['success'] == true) {
         print(body);
         role=int.parse(json.encode(body['userRole']));
+        token=json.encode(body['token']);
+        print(token);
         localStorsge=await SharedPreferences.getInstance();
         localStorsge.setInt('userRole', role);
         localStorsge.setString('loginId',json.encode(body['loginId']));
+        localStorsge.setString('token',json.encode(body['token']));
 
         if(role==user){
           Navigator.push(context,

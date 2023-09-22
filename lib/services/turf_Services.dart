@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turf_booking_app/config/constants.dart';
 import 'package:turf_booking_app/services/apiServices.dart';
 
@@ -7,7 +8,11 @@ import '../model/turf_model.dart';
 import 'package:http/http.dart'as http;
 class TurfServices {
   static Future<List<TurfModel>> getArticle() async {
-    String token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTAzZGJkMjY0MGUxZjdmOTFkNjdiMjciLCJ1c2VyUm9sZSI6MSwidXNlck5hbWUiOiJhZG1pbiIsImlhdCI6MTY5NTI3OTI0MCwiZXhwIjoxNjk1MjgyODQwfQ.Ghz5P5pek89diR5DUvYrMPDm2X95nQBghHJtE9JPEkI";
+
+     SharedPreferences localStorsge=await SharedPreferences.getInstance();
+     String token=(localStorsge.getString('token') ?? '');
+     print("token$token");
+
    var response=await http.get(Uri.parse(ApiConstants.baseUrl+ApiConstants.viewturf),
    headers: {'x-access-token':token}
    );

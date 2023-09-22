@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turf_booking_app/Design_pages/admin_addpart.dart';
 import 'package:turf_booking_app/Design_pages/home_page.dart';
+import 'package:turf_booking_app/Design_pages/login_page.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -260,7 +261,14 @@ class _AdminState extends State<Admin> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  TextButton(onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Login()));
+
+                  }, child: Text("Logout"))
                 ],
               ),
             ),
