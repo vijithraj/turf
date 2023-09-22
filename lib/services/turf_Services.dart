@@ -28,11 +28,23 @@ class TurfServices {
         // Handle the case where 'data' key is missing in the response.
         throw Exception('Data not found in the response');
       }
+    }else if (response.statusCode == 401) {
+      throw UnauthorizedException(
+          'Unauthorized: The provided token is invalid or expired.');
     } else {
-      // Handle non-200 status codes here.
       throw Exception('Failed to load data. Status Code: ${response.statusCode}');
     }
+   /* else {
+      // Handle non-200 status codes here.
+      throw Exception('Failed to load data. Status Code: ${response.statusCode}');
+    }*/
   }
+}
+
+class UnauthorizedException implements Exception {
+  final String message;
+
+  UnauthorizedException(this.message);
 }
 
 class SingleTurf{
