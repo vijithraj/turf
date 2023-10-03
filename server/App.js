@@ -6,7 +6,8 @@ const RegisterRouter = require('./routes/RegisterRouter');
 const cors=require('cors');
 const LoginRouter = require('./routes/LoginRouter');
 const ChekAuth = require('./middilewears/ChekAuth');
-const verifyAccess=require('./middilewears/verifyAccess')
+const verifyAccess=require('./middilewears/verifyAccess');
+const BookingRouter = require('./routes/BookRouter');
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use((req,res,next)=>{
@@ -37,6 +38,7 @@ mongoose.connect('mongodb+srv://vijithrajmp:1dH2dmy6i7MWe61j@truff.ihv5xp2.mongo
 app.use('/api/turf',Turfroutes)
 app.use('/api/register',RegisterRouter)
 app.use('/api/login',LoginRouter)
+app.use('/api/book-turf',BookingRouter)
 
 
 app.get('/Home',ChekAuth,verifyAccess,function(req,res)

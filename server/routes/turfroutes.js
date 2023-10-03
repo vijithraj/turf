@@ -44,11 +44,11 @@ TurfRouter.get('/view-turf/:id',
         _id:req.params.id,
     })
     .then((data)=>{
-        // res.status(200).json({
-        //     success:true,
-        //     error:false,
-        //     data:data,
-        // });
+        res.status(200).json({
+            success:true,
+            error:false,
+            data:data,
+        });
         res.send(data)
     }).catch((err)=>console.log(err))
 });

@@ -1,13 +1,13 @@
 
 class TurfModel{
 
-  String? Name;
-  String? Place;
-  String? Contact;
-  String? Image;
-  String? Id;
+  final String Name;
+  final String Place;
+  final String Contact;
+  final String Image;
+  final String Id;
 
-  TurfModel({this.Name, this.Place, this.Contact, this.Image, this.Id});
+  TurfModel( {required this.Name,required this.Place,required this.Contact,required this.Image,required this.Id});
 
   factory TurfModel.fromJson(Map<String,dynamic>json){
     return TurfModel(

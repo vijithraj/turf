@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turf_booking_app/Design_pages/home_page.dart';
+import 'package:turf_booking_app/Design_pages/nearBy_turf.dart';
+import 'package:turf_booking_app/Design_pages/user_viewpage.dart';
+
+import 'login_page.dart';
 
 class UserPart extends StatefulWidget {
   const UserPart({Key? key}) : super(key: key);
@@ -16,107 +20,180 @@ class _UserPartState extends State<UserPart> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.indigo,
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.all(0),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(30)),
-              height: 690,
-              width: screenWidth,
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.home,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Home Page",
-                          style: TextStyle(
-                              fontSize: 24, color: Colors.indigoAccent),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(13),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(30)),
-                      height: 150,
-                      width: screenWidth,
-                      child: const Column(mainAxisAlignment: MainAxisAlignment.center,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                    color: Colors.white, borderRadius: BorderRadius.circular(30)),
+                height: 690,
+                width: screenWidth,
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
                         children: [
-                          Text("LIFE IS LIKE ",style:
-                            TextStyle(fontSize: 25,color: Colors.amber),),
-                          Text (" SOCCER",style:
-                          TextStyle(fontSize: 25,color: Colors.amber),),
-                          Text (" YOU NEED GOALS !",style:
-                          TextStyle(fontSize: 25,color: Colors.amber),)
+                          Icon(
+                            Icons.home,
+                            size: 35,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Home Page",
+                            style: TextStyle(
+                                fontSize: 24, color: Colors.indigoAccent),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  const Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(13),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.indigo,
+                            borderRadius: BorderRadius.circular(30)),
+                        height: 150,
+                        width: screenWidth,
+                        child: const Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("LIFE IS LIKE ",style:
+                              TextStyle(fontSize: 25,color: Colors.amber),),
+                            Text (" SOCCER",style:
+                            TextStyle(fontSize: 25,color: Colors.amber),),
+                            Text (" YOU NEED GOALS !",style:
+                            TextStyle(fontSize: 25,color: Colors.amber),)
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Divider(
+                              height: 15,
+                              thickness: 2,
+                              indent: 0,
+                              endIndent: 5,
+                              color: Colors.indigoAccent,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Some other features",
+                          style: TextStyle(fontSize: 15, color: Colors.indigo),
+                        ),
+                        Expanded(
                           child: Divider(
                             height: 15,
                             thickness: 2,
-                            indent: 0,
+                            indent: 20,
                             endIndent: 5,
                             color: Colors.indigoAccent,
                           ),
                         ),
-                      ),
-                      Text(
-                        "Some other features",
-                        style: TextStyle(fontSize: 15, color: Colors.indigo),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          height: 15,
-                          thickness: 2,
-                          indent: 20,
-                          endIndent: 5,
-                          color: Colors.indigoAccent,
+                      ],
+                    ),
+                    GridView(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, crossAxisSpacing: 10),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()));
+                            },
+                            child: Container(
+                              /*alignment: Alignment.center,*/
+                              margin: EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                  color: Colors.indigo,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: const Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "TURF",
+                                        style: TextStyle(
+                                            fontSize: 25, color: Colors.amber),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "BOOKING",
+                                        style: TextStyle(
+                                            fontSize: 25, color: Colors.amber),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  GridView(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, crossAxisSpacing: 10),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Home()));
-                          },
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NearBy_turf()));
+
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                  color: Colors.indigo,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: const Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "VIEW ALL ",
+                                      style: TextStyle(
+                                          fontSize: 25, color: Colors.amber),
+                                    ),
+                                    Text(
+                                      "TURF",
+                                      style: TextStyle(
+                                          fontSize: 25, color: Colors.amber),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Container(
-                            /*alignment: Alignment.center,*/
+                            alignment: Alignment.center,
                             margin: EdgeInsets.all(0),
                             decoration: BoxDecoration(
                                 color: Colors.indigo,
@@ -129,7 +206,7 @@ class _UserPartState extends State<UserPart> {
                                   Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "TURF",
+                                      "VIEW",
                                       style: TextStyle(
                                           fontSize: 25, color: Colors.amber),
                                     ),
@@ -137,118 +214,79 @@ class _UserPartState extends State<UserPart> {
                                   Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "BOOKING",
+                                      "PAYMENTS",
                                       style: TextStyle(
-                                          fontSize: 25, color: Colors.amber),
+                                          fontSize: 23, color: Colors.amber),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(0),
-                          decoration: BoxDecoration(
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: const Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "VIEW ALL ",
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.amber),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserviewPage()));
+
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                  color: Colors.indigo,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: const Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      " VIEW ",
+                                      style: TextStyle(
+                                          fontSize: 25, color: Colors.amber),
+                                    ),
+                                    Text(
+                                      " BOOK ",
+                                      style: TextStyle(
+                                          fontSize: 25, color: Colors.amber),
+                                    ),
+                                    Text(
+                                      "TURF",
+                                      style: TextStyle(
+                                          fontSize: 25, color: Colors.amber),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  "TURF",
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.amber),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(onPressed: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Login()));
+                          }, icon: Icon(Icons.logout,size: 25,)),
+                          Text("Logout",style: TextStyle(fontSize: 15),),
+
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(0),
-                          decoration: BoxDecoration(
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: const Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "VIEW",
-                                    style: TextStyle(
-                                        fontSize: 25, color: Colors.amber),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "PAYMENTS",
-                                    style: TextStyle(
-                                        fontSize: 23, color: Colors.amber),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(0),
-                          decoration: BoxDecoration(
-                              color: Colors.indigo,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: const Padding(
-                            padding: EdgeInsets.all(15),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  " VIEW ",
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.amber),
-                                ),
-                                Text(
-                                  " BOOK ",
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.amber),
-                                ),
-                                Text(
-                                  "TURF",
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.amber),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+                    )
+
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

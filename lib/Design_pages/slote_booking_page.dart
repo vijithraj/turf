@@ -1,32 +1,96 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:turf_booking_app/model/turf_model.dart';
+import 'package:turf_booking_app/services/booking_services.dart';
+import 'package:turf_booking_app/services/turf_Services.dart';
 
-import '../model/model_class.dart';
+import '../config/constants.dart';
+import '../model/booking_model.dart';
+import '../services/apiServices.dart';
+import 'admin_addpart.dart';
+
+
+
 enum button{
- Button;
+Button
+
 }
 class Booking extends StatefulWidget {
-  final ListData StoreData;
+  final String id, Name, Place;
 
-  Booking({required this.StoreData});
+  Booking({required this.id,
+  required this.Name,required this.Place});
 
   @override
   State<Booking> createState() => _BookingState();
 }
 
 class _BookingState extends State<Booking> {
+  TextEditingController dateInput = TextEditingController();
+  TextEditingController timeinput = TextEditingController();
+  TextEditingController idcontroller = TextEditingController();
+  TextEditingController Timecontroller = TextEditingController();
+  TextEditingController datecontroller = TextEditingController();
+  TextEditingController useridcontroller = TextEditingController();
+
+  late SharedPreferences localStorsge;
+
   @override
-  /*void initState() {
-    dateinput.text = "";
+  void initState() {
+    feachdetails(widget.id);
+    dateInput.text = "";
+    timeinput.text = "";
     super.initState();
-  }*/
+  }
+  bool _isLoading = false;
+
+  String name = '';
+  String number = '';
+  String location = '';
+  String image = '';
+  String tufid = '';
+  String userId='';
+  String place='';
+  TurfModel? turfdetails;
+
+  String turfid='';
+  String date='';
+  String time= '';
+  bookModels? bookdetails;
+
+  Future<TurfModel?> feachdetails(String id) async {
+    try {
+      localStorsge=await SharedPreferences.getInstance();
+      userId=(localStorsge.getString('loginId') ?? '').replaceAll(('"'), (''));
+
+
+      final details = await SingleTurf.getSingleturf(id);
+      turfdetails = details;
+      print("turf$turfdetails");
+      setState(() {
+        name = turfdetails!.Name;
+        number = turfdetails!.Contact;
+        location = turfdetails!.Place;
+        image = turfdetails!.Image == null ? "" : turfdetails!.Image;
+
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
   bool colorchanges = false;
   button?selectedbutton;
   @override
   Widget build(BuildContext context) {
-    final TextEditingController dateinput = TextEditingController();
+    //final TextEditingController dateinput = TextEditingController();
     final TextEditingController numberController = TextEditingController();
     return Scaffold(
         backgroundColor: Colors.white,
@@ -40,7 +104,7 @@ class _BookingState extends State<Booking> {
             width: 320,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage(widget.StoreData.imagepath.toString()),
+              image: AssetImage("server/public/images/" +image),
               fit: BoxFit.fill,
             )),
             child: Padding(
@@ -55,14 +119,14 @@ class _BookingState extends State<Booking> {
                         color: Colors.white,
                       ),
                       Text(
-                        widget.StoreData.name.toString(),
+                        name,
                         style:
                             const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ],
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 12,
                   ),
                   Row(
                     children: [
@@ -71,7 +135,7 @@ class _BookingState extends State<Booking> {
                         color: Colors.red,
                       ),
                       Text(
-                        widget.StoreData.location.toString(),
+                       location,
                         style:
                             const TextStyle(fontSize: 18, color: Colors.white),
                       ),
@@ -82,146 +146,94 @@ class _BookingState extends State<Booking> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: dateinput,
-              decoration: const InputDecoration(
-                  icon: Icon(Icons.calendar_today), labelText: "Enter Date"),
+            child:TextField(
+              controller: dateInput,
+              //editing controller of this TextField
+              decoration: InputDecoration(
+                  icon: Icon(Icons.calendar_today), //icon of text field
+                  labelText: "Enter Date" //label text of field
+              ),
               readOnly: true,
+              //set it true, so that user will not able to edit text
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101));
+                    firstDate: DateTime(1950),
+                    //DateTime.now() - not to allow to choose before today.
+                    lastDate: DateTime(2100));
 
                 if (pickedDate != null) {
-                  print(pickedDate);
+                  print(
+                      pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                   String formattedDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                  print(formattedDate);
+                  DateFormat('yyyy-MM-dd').format(pickedDate);
+                  print(
+                      formattedDate); //formatted date output using intl package =>  2021-03-16
                   setState(() {
-                    dateinput.text = formattedDate;
+                    dateInput.text =
+                        formattedDate; //set output date to TextField value.
                   });
-                } else {
-                  print("Date is not selected");
+                } else {}
+              },
+            )),
+            TextField(
+              controller: timeinput, //editing controller of this TextField
+              decoration: InputDecoration(
+                  icon: Icon(Icons.timer), //icon of text field
+                  labelText: "Enter Time" //label text of field
+              ),
+              readOnly: true,  //set it true, so that user will not able to edit text
+              onTap: () async {
+                TimeOfDay? pickedTime =  await showTimePicker(
+                  initialTime: TimeOfDay.now(),
+                  context: context,
+                );
+
+                if(pickedTime != null ){
+ setState(() {
+                    timeinput.text = pickedTime.format(context).toString(); //set the value of text field.
+                  });
+                }else{
+                  print("Time is not selected");
                 }
               },
             ),
-          ),
-          const Text(
-            "SELECT YOUR TIME",
-            style: TextStyle(fontSize: 16, color: Colors.black87),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "DAY",
-                style: TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("6-7"),
-              buildOutlinedButton("7-8"),
-              buildOutlinedButton("8-9"),
-              buildOutlinedButton("9-10"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("10-11"),
-              buildOutlinedButton("11-12"),
-              buildOutlinedButton("12-1"),
-              buildOutlinedButton("1-2"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("2-3"),
-              buildOutlinedButton("3-4"),
-              buildOutlinedButton("4-5"),
-              buildOutlinedButton("5-6"),
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "NIGHT",
-                style: TextStyle(fontSize: 14, color: Colors.black87),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("6-7"),
-              buildOutlinedButton("7-8"),
-              buildOutlinedButton("8-9"),
-              buildOutlinedButton("9-10"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("10-11"),
-              buildOutlinedButton("11-12"),
-              buildOutlinedButton("12-1"),
-              buildOutlinedButton("1-2"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildOutlinedButton("2-3"),
-              buildOutlinedButton("3-4"),
-              buildOutlinedButton("4-5"),
-              buildOutlinedButton("5-6"),
-            ],
-          ),
+
+
+
+
+
+
           SizedBox(
               width: 170,
               child: ElevatedButton(
                   child: Text("BOOK NOW"),
                   onPressed: () {
+                    print(dateInput.text);
+                    print(timeinput.text);
+                   turfbookServices().turfbooking(context: context,name:widget.Name,
+                       place: widget.Place,
+                       Time: timeinput.text, Date: dateInput.text, Userid: userId);
                     Alert(
                       context: context,
                       type: AlertType.warning,
                       title: "PAYMENT ALERT",
-                      desc: "Please select your payment option.",
                       buttons: [
                         DialogButton(
-                          child: Text(
-                            " G pay",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
                           onPressed: () => Navigator.pop(context),
-                          color: Color.fromRGBO(0, 179, 134, 1.0),
-                        ),
-                        DialogButton(
-                          child: Text(
-                            "PAYMENT",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                          gradient: LinearGradient(colors: [
+                          gradient: const LinearGradient(colors: [
                             Color.fromRGBO(116, 116, 191, 1.0),
                             Color.fromRGBO(52, 138, 199, 1.0)
                           ]),
+                          child: const Text(
+                            "PAYMENT",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
                         )
                       ],
                     ).show();
@@ -234,26 +246,4 @@ class _BookingState extends State<Booking> {
                   }))
         ])));
   }
-
-  InkWell buildOutlinedButton(
-    String text,
-  ) =>
-      InkWell(
-        onTap: (){
-          setState(() {
-            selectedbutton=button.Button;
-            colorchanges=!colorchanges;
-
-          });
-        },
-        child: OutlinedButton(
-            onPressed: () {},
-            child: Text(
-              text,
-              style:  TextStyle(fontSize: 20,
-                color: selectedbutton==button.Button
-                    ?Colors.lightGreen.shade600
-                    :Colors.deepPurple,),
-            )),
-      );
 }

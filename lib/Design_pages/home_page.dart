@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:turf_booking_app/Design_pages/slote_booking_page.dart';
-import 'package:turf_booking_app/model/model_class.dart';
 
 import '../model/turf_model.dart';
 import '../services/turf_Services.dart';
@@ -14,23 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
- /* List Store = [
-    ListData(
-        imagepath: "images/turf images1.jpg",
-        name: "CAMP NOU",
-        location: "VATAKARA ",
-        contact: "9745236418"),
-    ListData(
-        imagepath: "images/turf images1.jpg",
-        name: "Soccer",
-        location: " Kozhikode",
-        contact: "9745236419"),
-    ListData(
-        imagepath: "images/turf images1.jpg",
-        name: "CAMP NOU",
-        location: " Memunda",
-        contact: "9745236423"),
-  ];*/
   bool isDark = false;
   @override
   Widget build(BuildContext context) {
@@ -39,7 +21,7 @@ class _HomeState extends State<Home> {
     );
     return Scaffold(
       body: FutureBuilder<List<TurfModel>>(
-        future: TurfServices.getArticle(),
+        future: TurfServices.getTurf(),
         builder:
             (BuildContext context, AsyncSnapshot<List<TurfModel>> snapshot) {
           if (snapshot.hasData) {
@@ -50,39 +32,11 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 30,
                   ),
-                  SearchAnchor(builder:
-                      (BuildContext context, SearchController controller) {
-                    return SearchBar(
-                      controller: controller,
-                      padding: const MaterialStatePropertyAll<EdgeInsets>(
-                          EdgeInsets.symmetric(horizontal: 16.0)),
-                      onTap: () {
-                        controller.openView();
-                      },
-                      onChanged: (_) {
-                        controller.openView();
-                      },
-                      leading: const Icon(Icons.search),
-                    );
-                  }, suggestionsBuilder:
-                      (BuildContext context, SearchController controller) {
-                    return List<ListTile>.generate(5, (int index) {
-                      final String item = 'item $index';
-                      return ListTile(
-                        title: Text(item),
-                        onTap: () {
-                          setState(() {
-                            controller.closeView(item);
-                          });
-                        },
-                      );
-                    });
-                  }),
                   ListView.builder(
                       shrinkWrap: true,
                       itemCount: snapshot.data?.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final storeData = snapshot.data?[index];
+                        var storeData = snapshot.data![index];
                         return Padding(
                           padding: const EdgeInsets.all(10),
                           child: Container(
@@ -130,11 +84,12 @@ class _HomeState extends State<Home> {
                                 ),
                                 trailing: GestureDetector(
                                   onTap: () {
-                                    /*Navigator.push(
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                Booking(StoreData: )));*/
+                                                Booking(id:snapshot.data![index].Id,Name:snapshot.data![index].Name,
+                                                    Place:snapshot.data![index].Place)));
                                   },
                                   child: const Stack(
                                     children: [
@@ -155,14 +110,11 @@ class _HomeState extends State<Home> {
                 ],
               ),
             );
-
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
-
-
       ),
     );
   }
